@@ -4,9 +4,10 @@ const app = express();
 const mongoose = require('mongoose');
 
 const authRoute = require('./route/auth');
-const userRoute = require('./route/users');
+const userRoute = require('./route/user');
 const verifyToken = require("./middleware/verifyToken");
 const eventRoute = require("./route/event");
+const ticketRoute = require("./route/ticket");
 
 
 const Port = process.env.PORT;
@@ -20,6 +21,7 @@ app.use('/auth', authRoute );
 app.use('/user', userRoute);
 app.use('/users', userRoute);
 app.use('/event', eventRoute);
+app.use('/ticket', ticketRoute);
 
 
 

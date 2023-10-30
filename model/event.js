@@ -14,7 +14,6 @@ eventId: {
 
 organizerId: {
     type:Number
-    // ref:'Orgnizer'
 },
 
 description:{
