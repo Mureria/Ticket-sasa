@@ -8,6 +8,11 @@ router.post('/', async (req, res) => {
 
     try {
       const eventData = req.body; // Event data from the request body
+      
+      
+      if(!(title && eventId && organizerId && description && location && date && ticketPrice && totalTickets )) {
+        res.status(400).send('All input is required');
+    };
 
       const event = await Event.create(eventData);
 
