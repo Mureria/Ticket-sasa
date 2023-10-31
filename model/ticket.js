@@ -1,26 +1,29 @@
 const mongoose = require('mongoose');
-const event =require('../model/event');
-const user =require('../model/user');
+const uuid = require('uuid');
+
+
 
 const ticketSchema = new mongoose.Schema({
-    ticketId: {
-        type:Number,
-        Unique:true
-     },
+    uuid: {
+        type: String,
+        default: uuid.v4(), // Generate a new UUID for each event
+        unique: true,
+      },
 
-    eventId: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'event'
+    eventId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Events' 
     },
-
-    userId: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'user'
+    
+    userId:{ 
+        type:mongoose.Schema.Types.ObjectId, 
+        ref: 'User' 
     },
     purchaseDate: {
         type:Date,
         required:true
     },
+
     status: {
         type:String,  
         required:true
@@ -29,5 +32,5 @@ const ticketSchema = new mongoose.Schema({
    
 }, {timestamps:true});
 
-module.exports = mongoose.model('ticket', ticketSchema);
+module.exports = mongoose.model('Ticket', ticketSchema);
  
