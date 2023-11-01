@@ -21,6 +21,7 @@ router.post('/', async (req, res) => {
       userId: ticketData.userId,
     });
 
+
     if (existingTicket) {
       return res.status(409).json('Ticket Already Exists.');
     }
@@ -28,15 +29,19 @@ router.post('/', async (req, res) => {
     // Create the ticket with the user_id and event_id populated
     const ticket = await Ticket.create(ticketData);
 
+
+
     // Populate the user_id and event_id fields
-    const populatedTicket = await Ticket.findById(ticket.uuid)
+    const populatedTicket = await Ticket.findById(ticket._id)
       .populate('userId', 'secondName email') // Populate user data with username and email fields
       .populate('eventId', 'title description'); // Populate event data with title and description fields
 
     // Respond with the populated ticket
     res.status(201).json(populatedTicket);
+    console.log(populatedTicket);
+
   } catch (error) {
-    res.status(500).json('Error creating ticket');
+    res.status(500).json({ message: 'Error creating the event', error: error.message });
   }
 });
 

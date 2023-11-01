@@ -17,7 +17,7 @@ const ticketSchema = new mongoose.Schema({
     
     userId:{ 
         type:mongoose.Schema.Types.ObjectId, 
-        ref: 'User' 
+        ref: 'User'
     },
     purchaseDate: {
         type:Date,
