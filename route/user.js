@@ -5,6 +5,8 @@ const User = require('../model/user');
 const verifyToken = require('../middleware/verifyToken');
 
 
+
+
 // Get All Users
 router.get('/all', async (req, res) => {
   try {

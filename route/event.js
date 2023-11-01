@@ -1,24 +1,27 @@
 const express = require('express');
 const router = express.Router();
 
+
 const Event = require('../model/event');
+const restrict = require('../middleware/restrict');
+
 
 // Create Event
 router.post('/', async (req, res) => {
 
     try {
 
-        const {title, eventId, organizerId, description, location, date, ticketPrice, totalTickets   } = req.body;
+        const {title, description, date, location, ticketPrice, totalTickets   } = req.body;
 
-        if(!(title && eventId && organizerId && description && location && date && ticketPrice && totalTickets)) {
+        if(!(title && description && location && date && ticketPrice && totalTickets)) {
            return  res.status(400).json('Enter all inputs')
         }
-        const event = await Event.create(eventData);
+        const event = await Event.create({title, description, date, location, ticketPrice, totalTickets   });
 
         res.status(201).json(event);
 
     } catch (error) {
-      res.status(500).json('Error creating the event' );
+      res.status(500).json({ message: 'Error creating the event', error: error.message });
     }
 });
 
@@ -79,7 +82,7 @@ router.put('/:Id', async (req, res) => {
 });
 
 //   Delete Event by Id
-router.delete('/:Id', async (req, res) => {
+router.delete('/:Id', restrict('admin', 'organizer'), async (req, res) => {
     try {
       const event = await Event.findByIdAndRemove(req.params.Id);
       

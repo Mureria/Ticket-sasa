@@ -1,0 +1,8 @@
+ const roles = {
+ admin: ['createEvent', 'editEvent', 'deleteEvent', 'viewUsers'],
+  organizer: ['createEvent', 'editEvent', 'viewTickets', 'availableTickets'],
+  user: ['viewEvents', 'buyTicket'],
+};
+
+
+//

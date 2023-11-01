@@ -13,11 +13,11 @@ router.post('/register', async(req, res) => {
     try {
 
     // Get user input
-    const {firstName, secondName, email, password  } = req.body;
+    const {firstName, secondName, email, password, role  } = req.body;
 
     // Validate user input
 
-    if(!(email && password && firstName && secondName)) {
+    if(!(email && password && firstName && secondName && role)) {
         res.status(400).send('All input is required');
     };
 

@@ -3,24 +3,16 @@ const uuid = require('uuid');
 
 
 const eventSchhema = new mongoose.Schema({
-    uuid: {
+uuid: {
         type: String,
         default: uuid.v4(), // Generate a new UUID for each event
         unique: true,
-      },
+},
+
 title: {
     type:String,
     require:true
-},
-
-eventId: {
-    type:Number,
-    unique:true
 }, 
-
-organizerId: {
-    type:Number
-},
 
 description:{
     type:String,
