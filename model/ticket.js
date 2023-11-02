@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const uuid = require('uuid');
 
 
-
 const ticketSchema = new mongoose.Schema({
     uuid: {
         type: String,
@@ -23,7 +22,7 @@ const ticketSchema = new mongoose.Schema({
         type:Date,
         required:true
     },
-
+    
     status: {
         type:String,  
         required:true

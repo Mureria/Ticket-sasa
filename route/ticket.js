@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const Ticket = require('../model/ticket');
+const User = require('../model/user');
+const Event = require('../model/event');
 
 
 
@@ -14,7 +16,7 @@ router.post('/', async (req, res) => {
     if (!ticketData) {
       return res.status(400).json('Input all fields');
     }
-
+ 
     // Check if the ticket already exists based on certain criteria
     const existingTicket = await Ticket.findOne({
       eventId: ticketData.eventId,
@@ -33,8 +35,8 @@ router.post('/', async (req, res) => {
 
     // Populate the user_id and event_id fields
     const populatedTicket = await Ticket.findById(ticket._id)
-      .populate('userId', 'secondName email') // Populate user data with username and email fields
-      .populate('eventId', 'title description'); // Populate event data with title and description fields
+      .populate(User.userId) // Populate user data with username and email fields
+      .populate(User.eventId); // Populate event data with title and description fields
 
     // Respond with the populated ticket
     res.status(201).json(populatedTicket);
@@ -45,7 +47,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-  
+ 
 
 // Get All ticket
 router.get('/all', async (req, res) => {
