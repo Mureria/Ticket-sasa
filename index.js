@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 
 const authRoute = require('./route/auth');
 const userRoute = require('./route/user');
-const verifyToken = require("./middleware/verifyToken");
 const eventRoute = require("./route/event");
 const ticketRoute = require("./route/ticket");
 

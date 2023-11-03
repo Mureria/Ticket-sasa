@@ -3,7 +3,7 @@ const router = express.Router()
 
 const User = require('../model/user');
 const verifyToken = require('../middleware/verifyToken');
-const restrict = require('../middleware/restrict');
+const { checkAdminRole } = require('../middleware/restrict');
 
 
 
@@ -63,7 +63,7 @@ router.put('/:Id', async (req, res) => {
 
 
 // Delete user by id
-router.delete('/:Id', restrict('admin'),  async (req, res) => {
+router.delete('/:Id', checkAdminRole,  async (req, res) => {
   
   const userId = req.params.Id;
 
