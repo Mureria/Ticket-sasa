@@ -39,4 +39,4 @@ totalTickets: {
 }},  {timestamps:true});
 
 
-module.exports= mongoose.model('Events', eventSchhema);
+module.exports= mongoose.model('Event', eventSchhema);

@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const User = require('../model/user')
+const verifyToken = require("../middleware/verifyToken");
+
 
 
 
@@ -39,6 +41,7 @@ router.post('/register', async(req, res) => {
         firstName,
         secondName,
         email,
+        role,
         password: await  encryptedPassword
     });
 

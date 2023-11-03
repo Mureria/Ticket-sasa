@@ -2,11 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const Ticket = require('../model/ticket');
-const User = require('../model/user');
-const Event = require('../model/event');
-
-
-
 
 // Create ticket
 router.post('/', async (req, res) => {
@@ -14,38 +9,33 @@ router.post('/', async (req, res) => {
     const ticketData = req.body;
 
     if (!ticketData) {
-      return res.status(400).json('Input all fields');
+      return res.status(400).json({ message: 'Input all fields' });
     }
- 
-    // Check if the ticket already exists based on certain criteria
-    const existingTicket = await Ticket.findOne({
-      eventId: ticketData.eventId,
-      userId: ticketData.userId,
-    });
 
+    // Check if the ticket already exists based on certain criteria
+    const existingTicket = await Ticket.findOne({userId: ticketData.userId});
 
     if (existingTicket) {
-      return res.status(409).json('Ticket Already Exists.');
+      return res.status(409).json({ message: 'Ticket Already Exists.' });
     }
 
-    // Create the ticket with the user_id and event_id populated
+    // Create the ticket
     const ticket = await Ticket.create(ticketData);
-
-
 
     // Populate the user_id and event_id fields
     const populatedTicket = await Ticket.findById(ticket._id)
-      .populate(User.userId) // Populate user data with username and email fields
-      .populate(User.eventId); // Populate event data with title and description fields
+      .populate('userId', 'firstName email') 
+      .populate('eventId', 'title description') 
+      .exec
 
     // Respond with the populated ticket
     res.status(201).json(populatedTicket);
     console.log(populatedTicket);
-
   } catch (error) {
-    res.status(500).json({ message: 'Error creating the event', error: error.message });
+    res.status(500).json({ message: 'Error creating the ticket', error: error.message });
   }
 });
+
 
  
 
@@ -117,6 +107,9 @@ router.delete('/:Id', async (req, res) => {
       res.status(500).json('Error deleting the ticket');
     }
 });
+
+
+
   
 
 module.exports = router;
