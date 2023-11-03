@@ -15,6 +15,12 @@ const userSchema = new mongoose.Schema({
         default:'user'
       },
 
+    // admin:{
+    //     type:Boolean,
+    //     default:false
+    // },
+    
+
     firstName: {
         type:String,
         required: true

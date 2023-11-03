@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const uuid = require('uuid');
 
+const Event = require('../model/event');
+const User = require('../model/user');
 
 
 const ticketSchema = new mongoose.Schema({
@@ -12,18 +14,21 @@ const ticketSchema = new mongoose.Schema({
 
     eventId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Events' 
+        ref: Event, 
+        required: true
     },
     
     userId:{ 
         type:mongoose.Schema.Types.ObjectId, 
-        ref: 'User'
+        ref: User,
+        required: true
     },
+
     purchaseDate: {
         type:Date,
         required:true
     },
-
+    
     status: {
         type:String,  
         required:true

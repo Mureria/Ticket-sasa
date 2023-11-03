@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 
+ 
 const Event = require('../model/event');
 const restrict = require('../middleware/restrict');
 
@@ -10,8 +11,7 @@ const restrict = require('../middleware/restrict');
 router.post('/', async (req, res) => {
 
     try {
-
-        const {title, description, date, location, ticketPrice, totalTickets   } = req.body;
+         const {title, description, date, location, ticketPrice, totalTickets   } = req.body;
 
         if(!(title && description && location && date && ticketPrice && totalTickets)) {
            return  res.status(400).json('Enter all inputs')
@@ -45,6 +45,8 @@ router.get('/all', async (req, res) => {
 
 // Get Event by Id
 router.get('/:Id', async (req, res) => {
+
+
 
     try {
 
@@ -81,8 +83,14 @@ router.put('/:Id', async (req, res) => {
     }
 });
 
+
+
+
+
+
+
 //   Delete Event by Id
-router.delete('/:Id', restrict('admin', 'organizer'), async (req, res) => {
+router.delete('/:Id', async (req, res) => {
     try {
       const event = await Event.findByIdAndRemove(req.params.Id);
       
