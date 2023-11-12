@@ -15,16 +15,14 @@ router.post('/register', async(req, res) => {
     try {
 
     // Get user input
-    const {firstName, secondName, email, password, role  } = req.body;
+    const {firstName, secondName, email, password, role } = req.body;
 
     // Validate user input
-
-    if(!(email && password && firstName && secondName && role)) {
+    if(!(firstName && secondName && email && password)) {
         res.status(400).send('All input is required');
     };
 
     // Check and validate if user exist in our db
-
     const existingUser = await User.findOne({email});
 
     if (existingUser) {
@@ -32,18 +30,17 @@ router.post('/register', async(req, res) => {
     };
 
     // Encrypt users password (auto-gen a salt and hash):
-    encryptedPassword = bcrypt.hash(password, 10) ;
-
+    const encryptedPassword = await bcrypt.hash(password, 10);
 
     // Create user in the db
-
     const user = await User.create({
         firstName,
         secondName,
         email,
-        role,
-        password: await  encryptedPassword
+        password: encryptedPassword,
+        role
     });
+        
 
     // Create token
     const token = jwt.sign(
@@ -58,9 +55,6 @@ router.post('/register', async(req, res) => {
 
         // return the created new user
         res.status(201).json(user);
-
-
-
     } catch (error) {
         console.log(error);
 
@@ -70,7 +64,7 @@ router.post('/register', async(req, res) => {
 
 
 
-
+// Login
 router.post("/login", async (req, res) => {
 
     try {

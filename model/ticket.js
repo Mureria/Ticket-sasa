@@ -23,11 +23,6 @@ const ticketSchema = new mongoose.Schema({
         ref: User,
         required: true
     },
-
-    purchaseDate: {
-        type:Date,
-        required:true
-    },
     
     status: {
         type:String,  
@@ -36,6 +31,15 @@ const ticketSchema = new mongoose.Schema({
     }
    
 }, {timestamps:true});
+
+// Changing '_id' key to 'id', more frontend friendly
+ticketSchema.virtual('id').get( function(){
+    return this._id.toHexString();
+});
+
+ticketSchema.set('toJSON', {
+    virtuals:true
+});
 
 module.exports = mongoose.model('Ticket', ticketSchema);
  

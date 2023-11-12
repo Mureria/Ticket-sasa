@@ -3,7 +3,6 @@ const router = express.Router()
 
 const User = require('../model/user');
 const verifyToken = require('../middleware/verifyToken');
-const { checkAdminRole } = require('../middleware/restrict');
 
 
 
@@ -63,7 +62,7 @@ router.put('/:Id', async (req, res) => {
 
 
 // Delete user by id
-router.delete('/:Id', checkAdminRole,  async (req, res) => {
+router.delete('/:Id',  async (req, res) => {
   
   const userId = req.params.Id;
 
@@ -81,27 +80,27 @@ router.delete('/:Id', checkAdminRole,  async (req, res) => {
   }
 });
 
-// router.delete("/:Id", async (req, res) => {
-//   try {
-//     // First find the user admin wants to delete
-//     const user = await User.findById(req.params.Id) // getting id from the id you put in url
+router.delete("/:Id", async (req, res) => {
+  try {
+    // First find the user admin wants to delete
+    const user = await User.findById(req.params.Id) // getting id from the id you put in url
 
-//     if(!user){
-//       return res.send('No user found');
-//     }
+    if(!user){
+      return res.send('No user found');
+    }
 
-//     // Make sure the user who wants to delete another user is an admin
-//     if (user.admin) {
-//        await user.deleteOne() 
-//        res.status(403).json("User deleted successfully!")
-//        // This deletes the user
-//     } else {
-//        res.status(403).json("You are not allowed to do this action!")
-//     }
-//   } catch (error) {
-//     res.sendStatus(500);
-//   }
-// });
+    // Make sure the user who wants to delete another user is an admin
+    if (user.admin) {
+       await user.deleteOne() 
+       res.status(403).json("User deleted successfully!")
+       // This deletes the user
+    } else {
+       res.status(403).json("You are not allowed to do this action!")
+    }
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
 
 
 module.exports = router

@@ -4,7 +4,8 @@ const router = express.Router();
 
  
 const Event = require('../model/event');
-const restrict = require('../middleware/restrict');
+const { adminMiddleware } = require('../middleware/role');
+const verifyToken = require('../middleware/verifyToken');
 
 
 // Create Event
@@ -65,7 +66,7 @@ router.get('/:Id', async (req, res) => {
 
 
 // Update an Event
-router.put('/:Id', async (req, res) => {
+router.put('/:Id', verifyToken, async (req, res) => {
     try {
 
       const updatedEventData = req.body; // Updated event data from the request body
@@ -90,7 +91,7 @@ router.put('/:Id', async (req, res) => {
 
 
 //   Delete Event by Id
-router.delete('/:Id', async (req, res) => {
+router.delete('/:Id', verifyToken, async (req, res) => {
     try {
       const event = await Event.findByIdAndRemove(req.params.Id);
       

@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
     }
 
     // Check if the ticket already exists based on certain criteria
-    const existingTicket = await Ticket.findOne({userId: ticketData.userId});
+    const existingTicket = await Ticket.findOne({userId: ticketData.userId, eventId: ticketData.eventId});
 
     if (existingTicket) {
       return res.status(409).json({ message: 'Ticket Already Exists.' });
@@ -26,11 +26,9 @@ router.post('/', async (req, res) => {
     const populatedTicket = await Ticket.findById(ticket._id)
       .populate('userId', 'firstName email') 
       .populate('eventId', 'title description') 
-      .exec
 
     // Respond with the populated ticket
     res.status(201).json(populatedTicket);
-    console.log(populatedTicket);
   } catch (error) {
     res.status(500).json({ message: 'Error creating the ticket', error: error.message });
   }
@@ -43,13 +41,16 @@ router.post('/', async (req, res) => {
 router.get('/all', async (req, res) => {
     try {
 
-      const tickets = await Ticket.find();
+      const populatedTicket = await Ticket.find().select('-uuid')
+      .populate('userId', 'firstName email') 
+      .populate('eventId', 'title description') 
 
-      if(!tickets){
+      if(!populatedTicket){
        return res.json('No current tickets at the moment');
       }
+     
 
-      res.status(200).json(tickets);
+      res.status(200).json(populatedTicket);
     } catch (error) {
       res.status(500).json('Error fetching tickets');
     }
@@ -60,13 +61,16 @@ router.get('/all', async (req, res) => {
 // Get ticket by Id
 router.get('/:Id', async (req, res) => {
     try {
-      const ticket = await Ticket.findById(req.params.Id);
-      
-      if (!ticket) {
+
+      const populatedTicket = await Ticket.findById(req.params.Id).select('-uuid')
+      .populate('userId', 'firstName email') 
+      .populate('eventId', 'title description') 
+
+      if (!populatedTicket) {
         return res.status(404).json('Ticket not found');
       }
       
-      res.json(ticket);
+      res.json(populatedTicket);
     } catch (error) {
       res.status(500).json('Error fetching the ticket');
     }
@@ -79,7 +83,9 @@ router.put('/:Id', async (req, res) => {
     try {
       const updatedTicketData = req.body;
 
-      const ticket = await Ticket.findByIdAndUpdate(req.params.Id, updatedTicketData, { new: true });
+      const ticket = await Ticket.findByIdAndUpdate(req.params.Id, updatedTicketData, { new: true })
+      .populate('userId', 'firstName email') 
+      .populate('eventId', 'title description');
       
       if (!ticket) {
         return res.status(404).json('Ticket not found');
@@ -108,8 +114,5 @@ router.delete('/:Id', async (req, res) => {
     }
 });
 
-
-
-  
 
 module.exports = router;
