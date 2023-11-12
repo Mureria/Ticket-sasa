@@ -4,7 +4,7 @@ const User = require('../model/user'); // Import your user model
 const checkUserRole = (roles) => {
   return async (req, res, next) => {
     try {
-      const userId = req.role; 
+      const userId = req.user.id; 
 
       const user = await User.findById(userId);
 

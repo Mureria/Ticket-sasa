@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Ticket = require('../model/ticket');
+const verifyToken = require('../middleware/verifyToken');
 
 // Create ticket
 router.post('/', async (req, res) => {
@@ -79,7 +80,7 @@ router.get('/:Id', async (req, res) => {
 
 
 // Update ticket by id
-router.put('/:Id', async (req, res) => {
+router.put('/:Id', verifyToken, async (req, res) => {
     try {
       const updatedTicketData = req.body;
 
@@ -99,7 +100,7 @@ router.put('/:Id', async (req, res) => {
   
 
 // Delete ticket by id
-router.delete('/:Id', async (req, res) => {
+router.delete('/:Id', verifyToken, async (req, res) => {
     try {
       const ticket = await Ticket.findByIdAndRemove(req.params.Id);
       
