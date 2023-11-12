@@ -11,15 +11,9 @@ const userSchema = new mongoose.Schema({
 
     role: {
         type: String,
-        Enum: ['user', 'admin', 'organizer'],
+        Enumerator: ['user', 'admin', 'organizer'],
         default:'user'
       },
-
-    // admin:{
-    //     type:Boolean,
-    //     default:false
-    // },
-    
 
     firstName: {
         type:String,
