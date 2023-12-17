@@ -28,7 +28,8 @@ const ticketSchema = new mongoose.Schema({
         type:String,  
         required:true
         // cancelled,used,purchased
-    }
+    },
+
    
 }, {timestamps:true});
 

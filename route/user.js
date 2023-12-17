@@ -9,9 +9,14 @@ const { adminMiddleware, organizerMiddleware } = require('../middleware/role');
 
 
 // Get All Users
-router.get('/all', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select('-password');
+
+    if (!users || users.length === 0) {
+      return res.status(404).json('No User Found');
+    }
+
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: 'An error occurred while fetching users' });
@@ -25,7 +30,7 @@ router.get('/:Id', async (req, res) => {
   const userId = req.params.Id;
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select('-password');
     
     if (!user) {
       return res.status(404).json('User not found');
@@ -40,7 +45,7 @@ router.get('/:Id', async (req, res) => {
 
 
 // Update User by Id
-router.put('/:Id', verifyToken, async (req, res) => {
+router.put('/:Id',  async (req, res) => {
 
   const userId = req.params.Id;
 
@@ -63,7 +68,7 @@ router.put('/:Id', verifyToken, async (req, res) => {
 
 
 // Delete user by id
-router.delete('/:Id', verifyToken, async (req, res) => {
+router.delete('/:Id',  async (req, res) => {
   
   const userId = req.params.Id;
 
@@ -78,23 +83,6 @@ router.delete('/:Id', verifyToken, async (req, res) => {
 
   } catch (error) {
     res.status(500).json('An error occurred while deleting the user');
-  }
-});
-
-router.delete("/:Id", verifyToken, adminMiddleware, organizerMiddleware, async (req, res) => {
-  try {
-    // First find the user admin wants to delete
-    const user = await User.findById(req.params.Id) // getting id from the id you put in url
-
-    if(!user){
-      return res.send('No user found');
-    }
-
-    await user.deleteOne() 
-
-    res.status(403).json("User deleted successfully!")
-  } catch (error) {
-    res.sendStatus(500);
   }
 });
 
